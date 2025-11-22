@@ -24,7 +24,6 @@ import "bootstrap/dist/js/bootstrap.min.js"
 
 const router = createBrowserRouter([
   { path: "/", element: <App /> },
-  { path: "/sobre", element: <Sobre /> },
 
   { path: "/ingredientes", element: <IngredientesIndex /> },
   { path: "/ingredientes/create", element: <IngredientesCreate /> },

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Toast from "../shared/Toast";
 import { useAuth } from "../../auth/useAuth";
+import ThemeButton from "../shared/ThemeButton";
 
 const UsuarioFormRegister = () => {
 
@@ -64,6 +65,10 @@ const UsuarioFormRegister = () => {
     return (
         <div>
             {error && <Toast error={error} setError={setError} />}
+
+            <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: 1050 }}>
+                <ThemeButton />
+            </div>
 
             <form onSubmit={handleSubmit} className="m-2">
                 <div className="my-2">

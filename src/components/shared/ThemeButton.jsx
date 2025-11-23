@@ -9,16 +9,16 @@ const ThemeButton = () => {
     }, [darkMode]);
 
     return (
-        <div className="form-check form-switch m-0">
-            <input
-                id="id-input-dark-theme"
-                className="form-check-input"
-                type="checkbox"
-                role="switch"
-                checked={darkMode}
-                onChange={() => setDarkMode(!darkMode)}
-            />
-        </div>
+        <button
+            className="btn btn-outline-secondary rounded-circle d-flex justify-content-center align-items-center"
+            style={{ width: "30px", height: "30px" }}
+            onClick={() => setDarkMode(!darkMode)}
+        >
+            <i
+                className={`bi ${darkMode ? "bi-moon-fill" : "bi-sun-fill"}`}
+                style={{ fontSize: "1.3rem" }}
+            ></i>
+        </button>
     );
 };
 

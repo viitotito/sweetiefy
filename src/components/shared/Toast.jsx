@@ -8,12 +8,10 @@ const Toast = ({ error, setError, duration = 3000 }) => {
 
         setProgress(100);
 
-        // Reduz a barra aos poucos
         const interval = setInterval(() => {
             setProgress(prev => prev - (100 / (duration / 100)));
         }, 100);
 
-        // Esconde o toast após o tempo
         const timer = setTimeout(() => {
             setError(null);
         }, duration);
@@ -40,7 +38,6 @@ const Toast = ({ error, setError, duration = 3000 }) => {
 
                 <div className="toast-body">{error}</div>
 
-                {/* Progress Bar */}
                 <div
                     style={{
                         height: "4px",

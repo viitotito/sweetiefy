@@ -1,41 +1,35 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Toast from "../shared/Toast";
 import { useAuth } from "../../auth/useAuth";
-import { Link } from "react-router-dom";
+import ThemeButton from "../shared/ThemeButton";
 
 const UsuarioFormLogin = () => {
 
-    const [email, setEmail] = useState("");        
-    const [senha, setSenha] = useState("");        
-    const [loading, setLoading] = useState(false); 
-    const [error, setError] = useState("");        
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-    const navigate = useNavigate();                
-    const { setUser } = useAuth();                 
+    const navigate = useNavigate();
+    const { setUser } = useAuth();
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); 
-        setError("");       
-
-        setLoading(true);   
+        e.preventDefault();
+        setError("");
+        setLoading(true);
 
         try {
             const res = await fetch("http://localhost:3000/api/usuarios/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                credentials: "include", 
-                body: JSON.stringify({
-                    email,
-                    senha
-                }),
+                credentials: "include",
+                body: JSON.stringify({ email, senha }),
             });
 
             const data = await res.json().catch(() => ({}));
-            if (!res.ok) {
-                throw new Error(data?.erro || "Falha no login");
-            }
+            if (!res.ok) throw new Error(data?.erro || "Falha no login");
 
             const at = data?.access_token;
             if (!at) throw new Error("Resposta sem access_token");
@@ -43,15 +37,13 @@ const UsuarioFormLogin = () => {
             sessionStorage.setItem("at", at);
 
             try {
-                const decoded = jwtDecode(at); 
+                const decoded = jwtDecode(at);
                 setUser(decoded);
-            } catch (e) {
-                console.error("Falha ao decodificar access_token no login:", e);
+            } catch {
                 setUser(null);
             }
 
             setSenha("");
-
             navigate("/");
         } catch (error) {
             setError(error.message || "Erro inesperado");
@@ -62,7 +54,12 @@ const UsuarioFormLogin = () => {
 
     return (
         <div>
+
             {error && <Toast error={error} setError={setError} />}
+
+            <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: 1050 }}>
+                <ThemeButton />
+            </div>
 
             <form onSubmit={handleSubmit} className="w-100">
 

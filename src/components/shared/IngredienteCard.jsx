@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthFetch } from "../../auth/useAuthFetch";
-import { useToast } from "../../auth/ToastContext"; // ✅ toast global
+import { useToast } from "../../auth/ToastContext";
 
 const IngredienteCard = ({ ingrediente, onDeleted }) => {
   const navigate = useNavigate();
   const authFetch = useAuthFetch();
-  const { setToast } = useToast(); // ✅ hook do toast global
+  const { setToast } = useToast();
 
   const [loading, setLoading] = useState(false);
+
+  const handleShow = () => {
+    navigate(`/ingredientes/${ingrediente.id}`);
+  };
 
   const handleEdit = () => {
     navigate(`/ingredientes/${ingrediente.id}/edit`);
@@ -27,14 +31,12 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
 
       if (!res.ok) throw new Error("Não foi possível deletar o ingrediente.");
 
-      // Atualiza a lista no componente pai
       onDeleted(ingrediente.id);
 
-      // ✅ dispara toast global
       setToast({
         message: `Ingrediente "${ingrediente.nome}" deletado com sucesso!`,
         type: "success",
-        duration: 3000
+        duration: 3000,
       });
 
     } catch (err) {
@@ -42,7 +44,7 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
       setToast({
         message: err.message,
         type: "error",
-        duration: 3000
+        duration: 3000,
       });
     } finally {
       setLoading(false);
@@ -59,20 +61,32 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
         <h5 className="card-title">{ingrediente.nome}</h5>
         <p className="card-text mb-1"><strong>Preço:</strong> R$ {ingrediente.preco.toFixed(2)}</p>
         <p className="card-text mb-1"><strong>Métrica:</strong> {ingrediente.metrica}</p>
-        <p className="card-text mb-3 text-muted"><small>Criado em: {createdAt}</small></p>
+        <p className="card-text mb-3 text-muted">
+          <small>Criado em: {createdAt}</small>
+        </p>
 
-        <div className="d-flex justify-content-between">
+        <div className="d-flex flex-column gap-2">
+
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-outline-secondary w-100"
+            onClick={handleShow}
+          >
+            Ver detalhes
+          </button>
+
+          <button
+            type="button"
+            className="btn btn-primary w-100"
             onClick={handleEdit}
             disabled={loading}
           >
             Editar
           </button>
+
           <button
             type="button"
-            className="btn btn-danger"
+            className="btn btn-danger w-100"
             onClick={handleDelete}
             disabled={loading}
           >

@@ -1,54 +1,62 @@
 import { useEffect, useState } from "react";
 
-const Toast = ({ error, setError, duration = 3000 }) => {
-    const [progress, setProgress] = useState(100);
+const Toast = ({ message, setMessage, type = "error", duration = 3000 }) => {
+  const [progress, setProgress] = useState(100);
 
-    useEffect(() => {
-        if (!error) return;
+  useEffect(() => {
+    return () => setMessage(null);
+  }, []);
 
-        setProgress(100);
+  useEffect(() => {
+    if (!message) return;
 
-        const interval = setInterval(() => {
-            setProgress(prev => prev - (100 / (duration / 100)));
-        }, 100);
+    setProgress(100);
 
-        const timer = setTimeout(() => {
-            setError(null);
-        }, duration);
+    const interval = setInterval(() => {
+      setProgress(prev => Math.max(prev - (100 / (duration / 100)), 0));
+    }, 100);
 
-        return () => {
-            clearInterval(interval);
-            clearTimeout(timer);
-        };
-    }, [error, duration, setError]);
+    const timer = setTimeout(() => {
+      setMessage(null);
+    }, duration);
 
-    if (!error) return null;
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timer);
+    };
+  }, [message, duration, setMessage]);
 
-    return (
-        <div className="toast-container position-fixed bottom-0 end-0 p-3">
-            <div className="toast text-bg-danger bg-opacity-50 show" role="alert">
-                <div className="toast-header">
-                    <strong className="me-auto">Erro</strong>
-                    <button
-                        className="btn-close"
-                        aria-label="Close"
-                        onClick={() => setError(null)}
-                    />
-                </div>
+  if (!message) return null;
 
-                <div className="toast-body">{error}</div>
+  const isError = type === "error";
+  const bgColor = isError ? "danger" : "success";
+  const headerText = isError ? "Erro" : "Sucesso";
 
-                <div
-                    style={{
-                        height: "4px",
-                        width: `${progress}%`,
-                        backgroundColor: "red",
-                        transition: "width 0.1s linear"
-                    }}
-                />
-            </div>
+  return (
+    <div className="toast-container position-fixed bottom-0 end-0 p-3">
+      <div className={`toast text-bg-${bgColor} bg-opacity-50 show`} role="alert">
+        <div className="toast-header">
+          <strong className="me-auto">{headerText}</strong>
+          <button
+            className="btn-close"
+            aria-label="Close"
+            onClick={() => setMessage(null)}
+          />
         </div>
-    );
+
+        <div className="toast-body">{message}</div>
+
+        <div
+          style={{
+            height: "4px",
+            width: `${progress}%`,
+            backgroundColor: isError ? "red" : "green",
+            transition: "width 0.1s linear"
+          }}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default Toast;

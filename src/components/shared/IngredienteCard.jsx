@@ -10,13 +10,8 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
 
   const [loading, setLoading] = useState(false);
 
-  const handleShow = () => {
-    navigate(`/ingredientes/${ingrediente.id}`);
-  };
-
-  const handleEdit = () => {
-    navigate(`/ingredientes/${ingrediente.id}/edit`);
-  };
+  const handleShow = () => navigate(`/ingredientes/${ingrediente.id}`);
+  const handleEdit = () => navigate(`/ingredientes/${ingrediente.id}/edit`);
 
   const handleDelete = async () => {
     const confirm = window.confirm(`Deseja realmente deletar "${ingrediente.nome}"?`);
@@ -67,29 +62,33 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
 
         <div className="d-flex flex-column gap-2">
 
+          {/* 🔍 Ver detalhes */}
           <button
             type="button"
-            className="btn btn-outline-secondary w-100"
+            className="btn btn-outline-secondary btn-sm w-100 d-flex align-items-center justify-content-center gap-2"
             onClick={handleShow}
           >
-            Ver detalhes
+            <i className="bi bi-eye"></i> Ver detalhes
           </button>
 
+          {/* ✏️ Editar */}
           <button
             type="button"
-            className="btn btn-primary w-100"
+            className="btn btn-primary btn-sm w-100 d-flex align-items-center justify-content-center gap-2"
             onClick={handleEdit}
             disabled={loading}
           >
-            Editar
+            <i className="bi bi-pencil-square"></i> Editar
           </button>
 
+          {/* 🗑️ Deletar */}
           <button
             type="button"
-            className="btn btn-danger w-100"
+            className="btn btn-danger btn-sm w-100 d-flex align-items-center justify-content-center gap-2"
             onClick={handleDelete}
             disabled={loading}
           >
+            <i className="bi bi-trash"></i>
             {loading ? "Deletando..." : "Deletar"}
           </button>
         </div>

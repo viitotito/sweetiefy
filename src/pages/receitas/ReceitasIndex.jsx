@@ -1,9 +1,18 @@
-import React from 'react'
+import { useAuth } from "../../auth/useAuth";
+import ReceitasList from "../../components/receitas/ReceitasList";
+import { Navigate } from "react-router-dom";
 
 const ReceitasIndex = () => {
-  return (
-    <div>ReceitasIndex</div>
-  )
-}
+  const { user, authLoading } = useAuth();
 
-export default ReceitasIndex
+  if (authLoading) return <p>Carregando usuário...</p>;
+  if (!user) return <Navigate to="/usuarios/login" replace />;
+
+  return (
+    <div>
+      <ReceitasList />
+    </div>
+  );
+};
+
+export default ReceitasIndex;

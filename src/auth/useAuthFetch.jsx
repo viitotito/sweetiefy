@@ -13,18 +13,28 @@ export const useAuthFetch = () => {
       const token = sessionStorage.getItem("at");
 
       const headers = {
-        "Content-Type": "application/json",
         ...(options.headers || {}),
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       };
 
-      const res = await fetch(url, { ...options, headers });
+      if (!(options.body instanceof FormData)) {
+        headers["Content-Type"] = "application/json";
+      }
+
+      const res = await fetch(url, {
+        ...options,
+        headers,
+        credentials: "include",
+      });
 
       if (res.status === 401) {
         sessionStorage.removeItem("at");
         setUser(null);
 
-        setToast({ message: "Sessão expirada. Faça login novamente.", type: "error" });
+        setToast({
+          message: "Sessão expirada. Faça login novamente.",
+          type: "error"
+        });
 
         navigate("/usuarios/login", { replace: true });
       }

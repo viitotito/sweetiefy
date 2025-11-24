@@ -10,28 +10,23 @@ const UsuarioFormRegister = () => {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
+    const [toast, setToast] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
 
     const navigate = useNavigate();
-
     const { setUser } = useAuth();
 
-    async function handleSubmit(e) {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setError("");
-
+        setToast(null);
         setLoading(true);
+
         try {
             const res = await fetch("http://localhost:3000/api/usuarios/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                body: JSON.stringify({
-                    nome,
-                    email,
-                    senha
-                }),
+                body: JSON.stringify({ nome, email, senha }),
             });
 
             const data = await res.json().catch(() => ({}));
@@ -48,29 +43,38 @@ const UsuarioFormRegister = () => {
             try {
                 const decoded = jwtDecode(at);
                 setUser(decoded);
-            } catch (e) {
-                console.error("Falha ao decodificar access_token no registro:", e);
+            } catch {
                 setUser(null);
             }
-            setSenha("");
 
+            setSenha("");
             navigate("/");
         } catch (error) {
-            setError(error.message || "Erro inesperado");
+            setToast({
+                message: error.message || "Erro inesperado",
+                type: "error"
+            });
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     return (
         <div>
-            {error && <Toast error={error} setError={setError} />}
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
 
             <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: 1050 }}>
                 <ThemeButton />
             </div>
 
             <form onSubmit={handleSubmit} className="m-2">
+                
                 <div className="my-2">
                     <label htmlFor="id-input-nome" className="form-label">
                         Nome

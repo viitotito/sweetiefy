@@ -10,14 +10,14 @@ const UsuarioFormLogin = () => {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [toast, setToast] = useState(null);
 
     const navigate = useNavigate();
     const { setUser } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError("");
+        setToast(null);
         setLoading(true);
 
         try {
@@ -46,7 +46,10 @@ const UsuarioFormLogin = () => {
             setSenha("");
             navigate("/");
         } catch (error) {
-            setError(error.message || "Erro inesperado");
+            setToast({
+                message: error.message || "Erro inesperado",
+                type: "error"
+            });
         } finally {
             setLoading(false);
         }
@@ -55,7 +58,13 @@ const UsuarioFormLogin = () => {
     return (
         <div>
 
-            {error && <Toast error={error} setError={setError} />}
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
 
             <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: 1050 }}>
                 <ThemeButton />

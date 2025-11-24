@@ -1,30 +1,26 @@
 import { useEffect, useState } from "react";
 
-const Toast = ({ message, setMessage, type = "error", duration = 3000 }) => {
+const Toast = ({ message, type = "error", duration = 3000, onClose }) => {
   const [progress, setProgress] = useState(100);
-
-  useEffect(() => {
-    return () => setMessage(null);
-  }, []);
 
   useEffect(() => {
     if (!message) return;
 
     setProgress(100);
 
-    const interval = setInterval(() => {
-      setProgress(prev => Math.max(prev - (100 / (duration / 100)), 0));
-    }, 100);
+    const start = setTimeout(() => {
+      setProgress(0);
+    }, 50);
 
-    const timer = setTimeout(() => {
-      setMessage(null);
-    }, duration);
+    const end = setTimeout(() => {
+      if (onClose) onClose();
+    }, duration + 50);
 
     return () => {
-      clearInterval(interval);
-      clearTimeout(timer);
+      clearTimeout(start);
+      clearTimeout(end);
     };
-  }, [message, duration, setMessage]);
+  }, [message, duration, onClose]);
 
   if (!message) return null;
 
@@ -37,11 +33,7 @@ const Toast = ({ message, setMessage, type = "error", duration = 3000 }) => {
       <div className={`toast text-bg-${bgColor} bg-opacity-50 show`} role="alert">
         <div className="toast-header">
           <strong className="me-auto">{headerText}</strong>
-          <button
-            className="btn-close"
-            aria-label="Close"
-            onClick={() => setMessage(null)}
-          />
+          <button className="btn-close" aria-label="Close" onClick={onClose} />
         </div>
 
         <div className="toast-body">{message}</div>
@@ -51,7 +43,7 @@ const Toast = ({ message, setMessage, type = "error", duration = 3000 }) => {
             height: "4px",
             width: `${progress}%`,
             backgroundColor: isError ? "red" : "green",
-            transition: "width 0.1s linear"
+            transition: `width ${duration}ms linear`,
           }}
         />
       </div>

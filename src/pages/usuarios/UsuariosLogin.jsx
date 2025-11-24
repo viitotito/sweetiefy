@@ -15,18 +15,13 @@ const UsuariosLogin = () => {
         );
     }
 
-    if (user) {
-        return <Navigate to="/" replace />;
-    }
+    if (user) return <Navigate to="/" replace />;
 
     return (
         <div className="min-vh-100 w-100 overflow-hidden">
             <div className="row g-0" style={{ height: "100vh" }}>
 
-                <div
-                    className="col-12 col-md-6 p-0 d-none d-md-block"
-                    style={{ height: "100vh" }}
-                >
+                <div className="col-12 col-md-6 p-0 d-none d-md-block">
                     <img
                         src="/img/sweetiefy-home.png"
                         alt="Sweetiefy home"
@@ -35,17 +30,13 @@ const UsuariosLogin = () => {
                     />
                 </div>
 
-                <div
-                    className="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center p-5"
-                    style={{ height: "100vh" }}
-                >
+                <div className="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center p-5">
                     <h1 className="fw-bold mb-4 text-center">Sweetiefy</h1>
 
                     <div className="w-100" style={{ maxWidth: "400px" }}>
                         <UsuarioFormLogin />
                     </div>
                 </div>
-
             </div>
         </div>
     );

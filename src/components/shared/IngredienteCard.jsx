@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthFetch } from "../../auth/useAuthFetch";
-import Toast from "./Toast";
 
-const IngredienteCard = ({ ingrediente, onDeleted }) => {
+const IngredienteCard = ({ ingrediente, onDeleted, onToast }) => {
   const navigate = useNavigate();
   const authFetch = useAuthFetch();
-
-  const [toast, setToast] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleEdit = () => {
@@ -15,7 +12,9 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
   };
 
   const handleDelete = async () => {
-    const confirm = window.confirm(`Deseja realmente deletar "${ingrediente.nome}"?`);
+    const confirm = window.confirm(
+      `Deseja realmente deletar "${ingrediente.nome}"?`
+    );
     if (!confirm) return;
 
     setLoading(true);
@@ -27,11 +26,14 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
 
       if (!res.ok) throw new Error("Não foi possível deletar o ingrediente.");
 
-      setToast({ message: `Ingrediente "${ingrediente.nome}" deletado com sucesso!`, type: "success" });
-      onDeleted(ingrediente.id); 
+      onDeleted(ingrediente.id);
+      onToast({
+        message: `Ingrediente "${ingrediente.nome}" deletado com sucesso!`,
+        type: "success",
+      });
     } catch (err) {
       console.error(err);
-      setToast({ message: err.message, type: "error" });
+      onToast({ message: err.message, type: "error" });
     } finally {
       setLoading(false);
     }
@@ -42,49 +44,39 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
     : "Não disponível";
 
   return (
-    <>
-            {toast && (
-                <Toast
-                    message={toast.message}
-                    type={toast.type}
-                    onClose={() => setToast(null)}
-                />
-            )}
+    <div className="d-flex justify-content-center mt-3">
+      <div className="card shadow-sm p-3" style={{ width: "18rem" }}>
+        <h5 className="card-title">{ingrediente.nome}</h5>
+        <p className="card-text mb-1">
+          <strong>Preço:</strong> R$ {ingrediente.preco.toFixed(2)}
+        </p>
+        <p className="card-text mb-1">
+          <strong>Métrica:</strong> {ingrediente.metrica}
+        </p>
+        <p className="card-text mb-3 text-muted">
+          <small>Criado em: {createdAt}</small>
+        </p>
 
-      <div className="d-flex justify-content-center mt-3">
-        <div className="card shadow-sm p-3" style={{ width: "18rem" }}>
-          <h5 className="card-title">{ingrediente.nome}</h5>
-          <p className="card-text mb-1">
-            <strong>Preço:</strong> R$ {ingrediente.preco.toFixed(2)}
-          </p>
-          <p className="card-text mb-1">
-            <strong>Métrica:</strong> {ingrediente.metrica}
-          </p>
-          <p className="card-text mb-3 text-muted">
-            <small>Criado em: {createdAt}</small>
-          </p>
-
-          <div className="d-flex justify-content-between">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleEdit}
-              disabled={loading}
-            >
-              Editar
-            </button>
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={handleDelete}
-              disabled={loading}
-            >
-              {loading ? "Deletando..." : "Deletar"}
-            </button>
-          </div>
+        <div className="d-flex justify-content-between">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleEdit}
+            disabled={loading}
+          >
+            Editar
+          </button>
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={handleDelete}
+            disabled={loading}
+          >
+            {loading ? "Deletando..." : "Deletar"}
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -15,8 +15,11 @@ const IngredienteList = () => {
       try {
         const res = await authFetch("http://localhost:3000/api/ingredientes");
         if (!res.ok) throw new Error("Erro ao buscar ingredientes");
+
         const data = await res.json();
-        setIngredientes(data.map(ing => ({ ...ing, preco: Number(ing.preco ?? 0) })));
+        setIngredientes(
+          data.map((ing) => ({ ...ing, preco: Number(ing.preco ?? 0) }))
+        );
       } catch (err) {
         console.error(err);
         setToast({ message: err.message, type: "error" });
@@ -24,12 +27,16 @@ const IngredienteList = () => {
         setLoading(false);
       }
     };
+
     fetchIngredientes();
   }, [authFetch]);
 
   const handleDeleted = (id) => {
-    setIngredientes(prev => prev.filter(ing => ing.id !== id));
-    setToast({ message: "Ingrediente deletado com sucesso!", type: "success" });
+    setIngredientes((prev) => prev.filter((ing) => ing.id !== id));
+  };
+
+  const handleToast = (toastData) => {
+    setToast(toastData);
   };
 
   return (
@@ -50,8 +57,13 @@ const IngredienteList = () => {
       )}
 
       <div className="d-flex justify-content-center flex-wrap gap-3">
-        {ingredientes.map(ing => (
-          <IngredienteCard key={ing.id} ingrediente={ing} onDeleted={handleDeleted} />
+        {ingredientes.map((ing) => (
+          <IngredienteCard
+            key={ing.id}
+            ingrediente={ing}
+            onDeleted={handleDeleted}
+            onToast={handleToast} // passa a função para os cards
+          />
         ))}
       </div>
     </div>

@@ -7,7 +7,7 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
   const navigate = useNavigate();
   const authFetch = useAuthFetch();
 
-  const [toast, setToast] = useState(null); // { message, type: "success"|"error" }
+  const [toast, setToast] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleEdit = () => {
@@ -15,7 +15,6 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
   };
 
   const handleDelete = async () => {
-    // Pergunta de confirmação
     const confirm = window.confirm(`Deseja realmente deletar "${ingrediente.nome}"?`);
     if (!confirm) return;
 
@@ -28,9 +27,8 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
 
       if (!res.ok) throw new Error("Não foi possível deletar o ingrediente.");
 
-      // Se deletou com sucesso
       setToast({ message: `Ingrediente "${ingrediente.nome}" deletado com sucesso!`, type: "success" });
-      onDeleted(ingrediente.id); // Atualiza a lista no componente pai
+      onDeleted(ingrediente.id); 
     } catch (err) {
       console.error(err);
       setToast({ message: err.message, type: "error" });
@@ -39,21 +37,19 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
     }
   };
 
-  // Formata apenas a data de criação (dd/mm/aaaa)
   const createdAt = ingrediente.data_criacao
     ? new Date(ingrediente.data_criacao).toLocaleDateString()
     : "Não disponível";
 
   return (
     <>
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          setMessage={() => setToast(null)}
-          duration={3000}
-        />
-      )}
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
 
       <div className="d-flex justify-content-center mt-3">
         <div className="card shadow-sm p-3" style={{ width: "18rem" }}>

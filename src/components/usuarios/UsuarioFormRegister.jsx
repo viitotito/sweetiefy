@@ -1,24 +1,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import Toast from "../shared/Toast";
 import { useAuth } from "../../auth/useAuth";
+import { useToast } from "../../auth/ToastContext"; // ✅ toast global
 import ThemeButton from "../shared/ThemeButton";
 
 const UsuarioFormRegister = () => {
-
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
-    const [toast, setToast] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
     const { setUser } = useAuth();
+    const { setToast } = useToast(); // ✅ toast global
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setToast(null);
         setLoading(true);
 
         try {
@@ -49,10 +47,18 @@ const UsuarioFormRegister = () => {
 
             setSenha("");
             navigate("/");
+
+            setToast({
+                message: "Registrado com sucesso!",
+                type: "success",
+                duration: 3000
+            });
+
         } catch (error) {
             setToast({
                 message: error.message || "Erro inesperado",
-                type: "error"
+                type: "error",
+                duration: 3000
             });
         } finally {
             setLoading(false);
@@ -61,14 +67,6 @@ const UsuarioFormRegister = () => {
 
     return (
         <div>
-            {toast && (
-                <Toast
-                    message={toast.message}
-                    type={toast.type}
-                    onClose={() => setToast(null)}
-                />
-            )}
-
             <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: 1050 }}>
                 <ThemeButton />
             </div>

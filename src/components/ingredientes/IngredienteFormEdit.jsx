@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthFetch } from "../../auth/useAuthFetch";
-import Toast from "../shared/Toast";
+import { useToast } from "../../auth/ToastContext"; // ✅ toast global
 
 const IngredienteFormEdit = ({ ingredienteId }) => {
   const authFetch = useAuthFetch();
   const navigate = useNavigate();
+  const { setToast } = useToast(); // ✅ hook do toast global
 
   const [nome, setNome] = useState("");
   const [preco, setPreco] = useState("");
   const [metrica, setMetrica] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [toast, setToast] = useState(null);
 
   const metricasEnum = ["Kg", "g", "L", "ml", "unidade", "mg"];
 
@@ -28,19 +28,19 @@ const IngredienteFormEdit = ({ ingredienteId }) => {
         setPreco(data.preco);
         setMetrica(data.metrica);
       } catch (err) {
-        setToast({ message: err.message, type: "error" });
+        setToast({ message: err.message, type: "error", duration: 3000 });
       } finally {
         setLoading(false);
       }
     };
     fetchIngrediente();
-  }, [ingredienteId, authFetch]);
+  }, [ingredienteId, authFetch, setToast]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!nome.trim() || !preco || !metrica.trim()) {
-      setToast({ message: "Todos os campos são obrigatórios!", type: "error" });
+      setToast({ message: "Todos os campos são obrigatórios!", type: "error", duration: 3000 });
       return;
     }
 
@@ -60,12 +60,16 @@ const IngredienteFormEdit = ({ ingredienteId }) => {
 
       const updated = await res.json();
 
-      setToast({ message: `Ingrediente "${updated.nome}" atualizado com sucesso!`, type: "success" });
+      setToast({
+        message: `Ingrediente "${updated.nome}" atualizado com sucesso!`,
+        type: "success",
+        duration: 3000
+      });
 
       setTimeout(() => navigate("/ingredientes"), 1500);
 
     } catch (err) {
-      setToast({ message: err.message, type: "error" });
+      setToast({ message: err.message, type: "error", duration: 3000 });
     } finally {
       setSaving(false);
     }
@@ -79,15 +83,6 @@ const IngredienteFormEdit = ({ ingredienteId }) => {
       style={{ maxWidth: "600px" }}
       onSubmit={handleSubmit}
     >
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-          duration={3000}
-        />
-      )}
-
       <div className="mb-3">
         <label className="form-label">Nome</label>
         <input
@@ -125,9 +120,7 @@ const IngredienteFormEdit = ({ ingredienteId }) => {
         >
           <option value="">Selecione uma métrica</option>
           {metricasEnum.map((m) => (
-            <option key={m} value={m}>
-              {m}
-            </option>
+            <option key={m} value={m}>{m}</option>
           ))}
         </select>
       </div>

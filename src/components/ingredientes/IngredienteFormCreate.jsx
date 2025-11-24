@@ -1,24 +1,25 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthFetch } from "../../auth/useAuthFetch";
-import Toast from "../shared/Toast";
+import { useToast } from "../../auth/ToastContext"; // ✅ hook do toast global
 
 const IngredienteFormCreate = () => {
   const authFetch = useAuthFetch();
   const navigate = useNavigate();
+  const { setToast } = useToast(); // ✅ toast global
 
   const [nome, setNome] = useState("");
   const [preco, setPreco] = useState("");
   const [metrica, setMetrica] = useState("");
   const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState(null);
 
   const metricasEnum = ["Kg", "g", "L", "ml", "unidade", "mg"];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!nome.trim() || !preco || !metrica.trim()) {
-      setToast({ message: "Todos os campos são obrigatórios!", type: "error" });
+      setToast({ message: "Todos os campos são obrigatórios!", type: "error", duration: 3000 });
       return;
     }
 
@@ -36,9 +37,11 @@ const IngredienteFormCreate = () => {
       }
 
       const created = await res.json();
+
       setToast({
         message: `Ingrediente "${created.nome}" criado com sucesso!`,
         type: "success",
+        duration: 3000
       });
 
       setNome("");
@@ -47,7 +50,7 @@ const IngredienteFormCreate = () => {
 
       setTimeout(() => navigate("/ingredientes"), 1500);
     } catch (err) {
-      setToast({ message: err.message, type: "error" });
+      setToast({ message: err.message, type: "error", duration: 3000 });
     } finally {
       setLoading(false);
     }
@@ -59,15 +62,6 @@ const IngredienteFormCreate = () => {
       style={{ maxWidth: "600px" }}
       onSubmit={handleSubmit}
     >
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-          duration={3000}
-        />
-      )}
-
       <div className="mb-3">
         <label className="form-label">Nome</label>
         <input

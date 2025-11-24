@@ -1,23 +1,21 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import Toast from "../shared/Toast";
 import { useAuth } from "../../auth/useAuth";
+import { useToast } from "../../auth/ToastContext"; // ✅ import do toast global
 import ThemeButton from "../shared/ThemeButton";
 
 const UsuarioFormLogin = () => {
-
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [loading, setLoading] = useState(false);
-    const [toast, setToast] = useState(null);
 
     const navigate = useNavigate();
     const { setUser } = useAuth();
+    const { setToast } = useToast(); // ✅ hook do toast global
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setToast(null);
         setLoading(true);
 
         try {
@@ -46,9 +44,11 @@ const UsuarioFormLogin = () => {
             setSenha("");
             navigate("/");
         } catch (error) {
+            // ✅ dispara o toast global
             setToast({
                 message: error.message || "Erro inesperado",
-                type: "error"
+                type: "error",
+                duration: 3000 // opcional
             });
         } finally {
             setLoading(false);
@@ -57,21 +57,12 @@ const UsuarioFormLogin = () => {
 
     return (
         <div>
-
-            {toast && (
-                <Toast
-                    message={toast.message}
-                    type={toast.type}
-                    onClose={() => setToast(null)}
-                />
-            )}
-
+            {/* Theme Button */}
             <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: 1050 }}>
                 <ThemeButton />
             </div>
 
             <form onSubmit={handleSubmit} className="w-100">
-
                 <div className="mb-3">
                     <label htmlFor="id-input-email" className="form-label fw-semibold">
                         E-mail

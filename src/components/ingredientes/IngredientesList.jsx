@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import Toast from "../shared/Toast";
+import { useEffect, useState } from "react";
 import IngredienteCard from "../shared/IngredienteCard";
 import { useAuthFetch } from "../../auth/useAuthFetch";
+import { useToast } from "../../auth/ToastContext";
 
 const IngredienteList = () => {
   const authFetch = useAuthFetch();
+  const { setToast } = useToast();
   const [ingredientes, setIngredientes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     const fetchIngredientes = async () => {
@@ -15,55 +15,31 @@ const IngredienteList = () => {
       try {
         const res = await authFetch("http://localhost:3000/api/ingredientes");
         if (!res.ok) throw new Error("Erro ao buscar ingredientes");
-
         const data = await res.json();
-        setIngredientes(
-          data.map((ing) => ({ ...ing, preco: Number(ing.preco ?? 0) }))
-        );
+        setIngredientes(data.map(ing => ({ ...ing, preco: Number(ing.preco ?? 0) })));
       } catch (err) {
         console.error(err);
-        setToast({ message: err.message, type: "error" });
+        setToast({ message: err.message, type: "error", duration: 3000 });
       } finally {
         setLoading(false);
       }
     };
-
     fetchIngredientes();
-  }, [authFetch]);
+  }, [authFetch, setToast]);
 
   const handleDeleted = (id) => {
-    setIngredientes((prev) => prev.filter((ing) => ing.id !== id));
-  };
-
-  const handleToast = (toastData) => {
-    setToast(toastData);
+    setIngredientes(prev => prev.filter(ing => ing.id !== id));
+    setToast({ message: "Ingrediente deletado com sucesso!", type: "success", duration: 3000 });
   };
 
   return (
     <div className="container py-4">
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-          duration={3000}
-        />
-      )}
-
       {loading && <p className="text-center">Carregando ingredientes...</p>}
-
-      {!loading && ingredientes.length === 0 && (
-        <p className="text-center">Nenhum ingrediente encontrado.</p>
-      )}
+      {!loading && ingredientes.length === 0 && <p className="text-center">Nenhum ingrediente encontrado.</p>}
 
       <div className="d-flex justify-content-center flex-wrap gap-3">
-        {ingredientes.map((ing) => (
-          <IngredienteCard
-            key={ing.id}
-            ingrediente={ing}
-            onDeleted={handleDeleted}
-            onToast={handleToast} // passa a função para os cards
-          />
+        {ingredientes.map(ing => (
+          <IngredienteCard key={ing.id} ingrediente={ing} onDeleted={handleDeleted} />
         ))}
       </div>
     </div>

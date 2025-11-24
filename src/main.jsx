@@ -1,4 +1,4 @@
-import { createRoot } from 'react-dom/client'
+import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { AuthProvider } from "./auth/AuthContext";
@@ -18,31 +18,73 @@ import ReceitasShow from './pages/receitas/ReceitasShow.jsx';
 
 import Home from './pages/home/home.jsx';
 
-import "bootstrap/dist/css/bootstrap.min.css"
-import "bootstrap/dist/js/bootstrap.min.js"
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
+
 import PrivateRoute from './auth/PrivateRoute.jsx';
+import PrivateLayout from './layouts/PrivateLayout.jsx';
 
 const router = createBrowserRouter([
     { path: "/usuarios/login", element: <UsuariosLogin /> },
     { path: "/usuarios/register", element: <UsuariosRegister /> },
 
-    { path: "/", element: (<PrivateRoute><Home /></PrivateRoute>) },
-    { path: "/home", element: (<PrivateRoute><Home /></PrivateRoute>) },
+    { path: "/", element: (
+        <PrivateRoute>
+            <PrivateLayout><Home /></PrivateLayout>
+        </PrivateRoute>
+    ) },
+    { path: "/home", element: (
+        <PrivateRoute>
+            <PrivateLayout><Home /></PrivateLayout>
+        </PrivateRoute>
+    ) },
 
-    { path: "/ingredientes", element: (<PrivateRoute><IngredientesIndex /></PrivateRoute>) },
-    { path: "/ingredientes/create", element: (<PrivateRoute><IngredientesCreate /></PrivateRoute>) },
-    { path: "/ingredientes/:id", element: (<PrivateRoute><IngredientesShow /></PrivateRoute>) },
-    { path: "/ingredientes/:id/edit", element: (<PrivateRoute><IngredientesEdit /></PrivateRoute>) },
+    { path: "/ingredientes", element: (
+        <PrivateRoute>
+            <PrivateLayout><IngredientesIndex /></PrivateLayout>
+        </PrivateRoute>
+    ) },
+    { path: "/ingredientes/create", element: (
+        <PrivateRoute>
+            <PrivateLayout><IngredientesCreate /></PrivateLayout>
+        </PrivateRoute>
+    ) },
+    { path: "/ingredientes/:id", element: (
+        <PrivateRoute>
+            <PrivateLayout><IngredientesShow /></PrivateLayout>
+        </PrivateRoute>
+    ) },
+    { path: "/ingredientes/:id/edit", element: (
+        <PrivateRoute>
+            <PrivateLayout><IngredientesEdit /></PrivateLayout>
+        </PrivateRoute>
+    ) },
 
-    { path: "/receitas", element: (<PrivateRoute><ReceitasIndex /></PrivateRoute>) },
-    { path: "/receitas/create", element: (<PrivateRoute><ReceitasCreate /></PrivateRoute>) },
-    { path: "/receitas/:id", element: (<PrivateRoute><ReceitasShow /></PrivateRoute>) },
-    { path: "/receitas/:id/edit", element: (<PrivateRoute><ReceitasEdit /></PrivateRoute>) }
+    { path: "/receitas", element: (
+        <PrivateRoute>
+            <PrivateLayout><ReceitasIndex /></PrivateLayout>
+        </PrivateRoute>
+    ) },
+    { path: "/receitas/create", element: (
+        <PrivateRoute>
+            <PrivateLayout><ReceitasCreate /></PrivateLayout>
+        </PrivateRoute>
+    ) },
+    { path: "/receitas/:id", element: (
+        <PrivateRoute>
+            <PrivateLayout><ReceitasShow /></PrivateLayout>
+        </PrivateRoute>
+    ) },
+    { path: "/receitas/:id/edit", element: (
+        <PrivateRoute>
+            <PrivateLayout><ReceitasEdit /></PrivateLayout>
+        </PrivateRoute>
+    ) }
 ]);
 
 createRoot(document.getElementById('root')).render(
     <AuthProvider>
         <RouterProvider router={router} />
     </AuthProvider>
-)
+);

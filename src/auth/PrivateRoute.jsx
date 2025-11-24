@@ -1,24 +1,20 @@
+import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "./useAuth";
 
 const PrivateRoute = ({ children }) => {
-    const { user, authLoading } = useAuth();
+  const { user, authLoading, setUser } = useAuth();
 
-    if (authLoading) {
-        return (
-            <div className="d-flex justify-content-center align-items-center min-vh-100">
-                <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Carregando...</span>
-                </div>
-            </div>
-        );
-    }
+  useEffect(() => {
+    const token = sessionStorage.getItem("at");
+    if (!token) setUser(null);
+  }, [setUser]);
 
-    if (!user) {
-        return <Navigate to="/usuarios/login" replace />;
-    }
+  if (authLoading) return <p>Carregando...</p>;
 
-    return children;
+  if (!user) return <Navigate to="/usuarios/login" replace />;
+
+  return children;
 };
 
 export default PrivateRoute;

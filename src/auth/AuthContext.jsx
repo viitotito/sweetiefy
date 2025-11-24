@@ -2,45 +2,51 @@ import { createContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext({
-    user: null,
-    setUser: () => { },
-    authLoading: true,
+  user: null,
+  setUser: () => {},
+  authLoading: true,
 });
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [authLoading, setAuthLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
-    useEffect(() => {
-        const token = sessionStorage.getItem("at");
+  // Função para validar token
+  const validateToken = () => {
+    const token = sessionStorage.getItem("at");
+    if (!token) {
+      setUser(null);
+      return;
+    }
+    try {
+      const decoded = jwtDecode(token);
+      if (decoded.exp && decoded.exp * 1000 < Date.now()) {
+        setUser(null); // token expirado
+      } else {
+        setUser(decoded); // token válido
+      }
+    } catch (err) {
+      console.error("Token inválido:", err);
+      setUser(null);
+    }
+  };
 
-        if (!token) {
-            setUser(null);
-            setAuthLoading(false);
-            return;
-        }
+  useEffect(() => {
+    validateToken();
+    setAuthLoading(false);
 
-        try {
-            const decoded = jwtDecode(token);
+    // Evento para detectar token apagado em outra aba
+    const handleStorage = () => validateToken();
+    window.addEventListener("storage", handleStorage);
 
-            if (decoded.exp && decoded.exp * 1000 < Date.now()) {
-                setUser(null);
-            } else {
-                setUser(decoded);
-            }
-        } catch (err) {
-            console.error("Token inválido:", err);
-            setUser(null);
-        } finally {
-            setAuthLoading(false);
-        }
-    }, []);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
 
-    return (
-        <AuthContext.Provider value={{ user, setUser, authLoading }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={{ user, setUser, authLoading }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export { AuthContext, AuthProvider };

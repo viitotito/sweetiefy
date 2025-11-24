@@ -7,11 +7,10 @@ const PrivateRoute = ({ children }) => {
 
   useEffect(() => {
     const token = sessionStorage.getItem("at");
-    if (!token) setUser(null);
+    if (!token) setUser(null); 
   }, [setUser]);
 
   if (authLoading) return <p>Carregando...</p>;
-
   if (!user) return <Navigate to="/usuarios/login" replace />;
 
   return children;

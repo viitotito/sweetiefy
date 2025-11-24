@@ -16,13 +16,11 @@ const useAuthFetch = () => {
 
     let res = await fetch(url, { ...baseOptions, headers });
 
-    // ✅ Aqui é onde você coloca o bloco
     if (res.status === 401) {
-      // token inválido ou expirado
-      sessionStorage.removeItem("at"); // remove token
-      setUser(null); // limpa usuário no contexto
-      navigate("/usuarios/login", { replace: true }); // redireciona forçosamente
-      return res; // retorna a resposta para não quebrar a execução
+      sessionStorage.removeItem("at"); 
+      setUser(null); 
+      navigate("/usuarios/login", { replace: true }); 
+      return res; 
     }
 
     return res;

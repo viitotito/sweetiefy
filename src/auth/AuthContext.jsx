@@ -11,7 +11,6 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
 
-  // Função para validar token
   const validateToken = () => {
     const token = sessionStorage.getItem("at");
     if (!token) {
@@ -21,9 +20,9 @@ const AuthProvider = ({ children }) => {
     try {
       const decoded = jwtDecode(token);
       if (decoded.exp && decoded.exp * 1000 < Date.now()) {
-        setUser(null); // token expirado
+        setUser(null); 
       } else {
-        setUser(decoded); // token válido
+        setUser(decoded); 
       }
     } catch (err) {
       console.error("Token inválido:", err);
@@ -35,7 +34,6 @@ const AuthProvider = ({ children }) => {
     validateToken();
     setAuthLoading(false);
 
-    // Evento para detectar token apagado em outra aba
     const handleStorage = () => validateToken();
     window.addEventListener("storage", handleStorage);
 

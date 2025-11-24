@@ -114,7 +114,16 @@ const IngredienteFormCreate = () => {
         </select>
       </div>
 
-      <div className="d-flex justify-content-end">
+      <div className="d-flex justify-content-between">
+        <button
+          type="button"
+          className="btn btn-outline-secondary"
+          onClick={() => navigate("/ingredientes")}
+          disabled={loading}
+        >
+          Cancelar
+        </button>
+
         <button
           type="submit"
           className={`btn ${loading ? "btn-secondary" : "btn-success"}`}

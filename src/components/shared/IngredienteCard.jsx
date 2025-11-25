@@ -62,7 +62,6 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
 
         <div className="d-flex flex-column gap-2">
 
-          {/* 🔍 Ver detalhes */}
           <button
             type="button"
             className="btn btn-outline-secondary btn-sm w-100 d-flex align-items-center justify-content-center gap-2"
@@ -71,7 +70,6 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
             <i className="bi bi-eye"></i> Ver detalhes
           </button>
 
-          {/* ✏️ Editar */}
           <button
             type="button"
             className="btn btn-primary btn-sm w-100 d-flex align-items-center justify-content-center gap-2"
@@ -81,7 +79,6 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
             <i className="bi bi-pencil-square"></i> Editar
           </button>
 
-          {/* 🗑️ Deletar */}
           <button
             type="button"
             className="btn btn-danger btn-sm w-100 d-flex align-items-center justify-content-center gap-2"

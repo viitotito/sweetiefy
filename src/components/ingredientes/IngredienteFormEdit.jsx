@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthFetch } from "../../auth/useAuthFetch";
-import { useToast } from "../../auth/ToastContext"; // ✅ toast global
+import { useToast } from "../../auth/ToastContext"; 
 
 const IngredienteFormEdit = ({ ingredienteId }) => {
   const authFetch = useAuthFetch();
   const navigate = useNavigate();
-  const { setToast } = useToast(); // ✅ hook do toast global
+  const { setToast } = useToast(); 
 
   const [nome, setNome] = useState("");
   const [preco, setPreco] = useState("");
@@ -16,7 +16,6 @@ const IngredienteFormEdit = ({ ingredienteId }) => {
 
   const metricasEnum = ["Kg", "g", "L", "ml", "unidade", "mg"];
 
-  // Busca o ingrediente pelo ID
   useEffect(() => {
     const fetchIngrediente = async () => {
       try {

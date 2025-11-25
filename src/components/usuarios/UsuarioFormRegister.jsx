@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../auth/useAuth";
-import { useToast } from "../../auth/ToastContext"; // ✅ toast global
+import { useToast } from "../../auth/ToastContext"; 
 import ThemeButton from "../shared/ThemeButton";
 
 const UsuarioFormRegister = () => {
@@ -13,7 +13,7 @@ const UsuarioFormRegister = () => {
 
     const navigate = useNavigate();
     const { setUser } = useAuth();
-    const { setToast } = useToast(); // ✅ toast global
+    const { setToast } = useToast(); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();

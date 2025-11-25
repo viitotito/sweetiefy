@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../auth/useAuth";
-import { useToast } from "../../auth/ToastContext"; // ✅ import do toast global
+import { useToast } from "../../auth/ToastContext"; 
 import ThemeButton from "../shared/ThemeButton";
 
 const UsuarioFormLogin = () => {
@@ -12,7 +12,7 @@ const UsuarioFormLogin = () => {
 
     const navigate = useNavigate();
     const { setUser } = useAuth();
-    const { setToast } = useToast(); // ✅ hook do toast global
+    const { setToast } = useToast(); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -44,11 +44,10 @@ const UsuarioFormLogin = () => {
             setSenha("");
             navigate("/");
         } catch (error) {
-            // ✅ dispara o toast global
             setToast({
                 message: error.message || "Erro inesperado",
                 type: "error",
-                duration: 3000 // opcional
+                duration: 3000 
             });
         } finally {
             setLoading(false);
@@ -57,7 +56,6 @@ const UsuarioFormLogin = () => {
 
     return (
         <div>
-            {/* Theme Button */}
             <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: 1050 }}>
                 <ThemeButton />
             </div>

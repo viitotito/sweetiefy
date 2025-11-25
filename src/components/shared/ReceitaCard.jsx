@@ -67,7 +67,6 @@ const ReceitaCard = ({ receita, onDeleted }) => {
           <p className="fw-bold">Preço: R$ {receita.preco}</p>
 
           <div className="d-flex justify-content-center gap-2 mt-2">
-            {/* 🔍 Visualizar */}
             <button
               type="button"
               className="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center"
@@ -83,7 +82,6 @@ const ReceitaCard = ({ receita, onDeleted }) => {
               <i className="bi bi-eye"></i>
             </button>
 
-            {/* ✏️ Editar */}
             <button
               type="button"
               className="btn btn-primary btn-sm d-flex align-items-center justify-content-center"
@@ -100,7 +98,6 @@ const ReceitaCard = ({ receita, onDeleted }) => {
               <i className="bi bi-pencil-square"></i>
             </button>
 
-            {/* 🗑️ Deletar */}
             <button
               type="button"
               className="btn btn-danger btn-sm d-flex align-items-center justify-content-center"

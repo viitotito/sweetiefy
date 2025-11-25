@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthFetch } from "../../auth/useAuthFetch";
-import { useToast } from "../../auth/ToastContext"; // ✅ hook do toast global
+import { useToast } from "../../auth/ToastContext";
 
 const IngredienteFormCreate = () => {
   const authFetch = useAuthFetch();
   const navigate = useNavigate();
-  const { setToast } = useToast(); // ✅ toast global
+  const { setToast } = useToast();
 
   const [nome, setNome] = useState("");
   const [preco, setPreco] = useState("");

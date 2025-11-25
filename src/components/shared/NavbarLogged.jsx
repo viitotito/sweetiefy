@@ -14,12 +14,10 @@ export default function NavbarLogged() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-body-tertiary">
       <div className="container-fluid">
-        {/* Marca */}
         <Link className="navbar-brand" to="/home">
           Sweetiefy
         </Link>
 
-        {/* Botão colapsar para mobile */}
         <button
           className="navbar-toggler"
           type="button"
@@ -32,11 +30,8 @@ export default function NavbarLogged() {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* Menu colapsável */}
         <div className="collapse navbar-collapse" id="navbarNav">
-          {/* Links principais */}
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            {/* Ingredientes */}
             <li className="nav-item dropdown">
               <NavLink
                 to="#"
@@ -72,7 +67,6 @@ export default function NavbarLogged() {
               </ul>
             </li>
 
-            {/* Receitas */}
             <li className="nav-item dropdown">
               <NavLink
                 to="#"
@@ -109,7 +103,6 @@ export default function NavbarLogged() {
             </li>
           </ul>
 
-          {/* Botões à direita: logout + tema */}
           <div className="d-flex align-items-center gap-2">
             <button
               className="btn btn-outline-secondary d-flex align-items-center gap-1"

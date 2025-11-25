@@ -47,9 +47,9 @@ const Home = () => {
           {isAdmin && (
             <button
               className="btn btn-secondary"
-              onClick={() => navigate("/configuracoes")}
+              onClick={() => navigate("/usuarios")}
             >
-              Configurações
+              Usuários
             </button>
           )}
         </div>

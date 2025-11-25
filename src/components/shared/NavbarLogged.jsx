@@ -3,7 +3,7 @@ import ThemeButton from "./ThemeButton";
 import { useAuth } from "../../auth/useAuth";
 
 export default function NavbarLogged() {
-  const { setUser } = useAuth();
+  const { user, setUser } = useAuth();
 
   const handleLogout = () => {
     sessionStorage.removeItem("at");
@@ -101,6 +101,32 @@ export default function NavbarLogged() {
                 </li>
               </ul>
             </li>
+
+            {user?.perfil === 1 && (
+              <li className="nav-item dropdown">
+                <NavLink
+                  to="#"
+                  className="nav-link dropdown-toggle"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                >
+                  Usuários
+                </NavLink>
+                <ul className="dropdown-menu">
+                  <li>
+                    <NavLink
+                      to="/usuarios"
+                      end
+                      className={({ isActive }) =>
+                        "dropdown-item" + (isActive ? " active" : "")
+                      }
+                    >
+                      Lista de Usuários
+                    </NavLink>
+                  </li>
+                </ul>
+              </li>
+            )}
           </ul>
 
           <div className="d-flex align-items-center gap-2">

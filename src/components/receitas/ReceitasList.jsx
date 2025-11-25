@@ -38,7 +38,7 @@ const ReceitasList = () => {
 
   return (
     <div className="container mt-4">
-      {receitas.length === 0 && <p>Nenhuma receita cadastrada.</p>}
+      {receitas.length === 0 && <p className="text-center">Nenhuma receita cadastrada.</p>}
 
       <div className="row">
         {receitas.map((r) => (

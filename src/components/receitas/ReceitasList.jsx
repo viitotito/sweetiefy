@@ -32,6 +32,10 @@ const ReceitasList = () => {
 
   if (loading) return <p className="text-center mt-4">Carregando receitas...</p>;
 
+  const handleDeleted = (id) => {
+    setReceitas((prev) => prev.filter((r) => r.id !== id));
+  };
+
   return (
     <div className="container mt-4">
       {receitas.length === 0 && <p>Nenhuma receita cadastrada.</p>}
@@ -39,7 +43,7 @@ const ReceitasList = () => {
       <div className="row">
         {receitas.map((r) => (
           <div className="col-md-4 mb-4" key={r.id}>
-            <ReceitaCard receita={r} />
+            <ReceitaCard receita={r} onDeleted={handleDeleted} />
           </div>
         ))}
       </div>

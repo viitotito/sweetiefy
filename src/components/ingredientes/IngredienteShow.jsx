@@ -47,7 +47,6 @@ const IngredienteShow = () => {
             className="card p-4 shadow-sm mx-auto"
             style={{ maxWidth: "600px" }}
         >
-            <h4 className="text-center mb-3">Detalhes do Ingrediente</h4>
 
             <div className="mb-3">
                 <label className="form-label fw-bold">Nome</label>

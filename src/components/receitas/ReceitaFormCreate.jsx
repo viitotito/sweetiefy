@@ -12,8 +12,22 @@ const ReceitaFormCreate = () => {
   const [descricao, setDescricao] = useState("");
   const [preco, setPreco] = useState("");
   const [imagem, setImagem] = useState(null);
-
+  const [imagemPreview, setImagemPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const handleImagemChange = (e) => {
+    const file = e.target.files[0];
+    setImagem(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagemPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagemPreview(null);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,9 +48,7 @@ const ReceitaFormCreate = () => {
       formData.append("descricao", descricao);
       formData.append("preco", preco);
 
-      if (imagem) {
-        formData.append("imagem", imagem);
-      }
+      if (imagem) formData.append("imagem", imagem);
 
       const res = await authFetch("http://localhost:3000/api/receitas", {
         method: "POST",
@@ -57,7 +69,6 @@ const ReceitaFormCreate = () => {
       });
 
       navigate("/receitas");
-
     } catch (err) {
       console.error(err);
       setToast({
@@ -112,14 +123,33 @@ const ReceitaFormCreate = () => {
           />
         </div>
 
-        {/* Imagem */}
+        {/* Pré-visualização da imagem */}
+        {imagemPreview && (
+          <div className="mb-3 text-center">
+            <label className="form-label d-block">Imagem Selecionada</label>
+            <img
+              src={imagemPreview}
+              alt="Pré-visualização"
+              style={{
+                width: "120px",
+                height: "120px",
+                objectFit: "cover",
+                borderRadius: "50%",
+                marginBottom: "10px",
+                border: "2px solid #ccc",
+              }}
+            />
+          </div>
+        )}
+
+        {/* Seleção de imagem */}
         <div className="mb-3">
-          <label className="form-label">Imagem da Receita</label>
+          <label className="form-label">Imagem da Receita (opcional)</label>
           <input
             type="file"
             accept="image/*"
             className="form-control"
-            onChange={(e) => setImagem(e.target.files[0])}
+            onChange={handleImagemChange}
           />
         </div>
 
@@ -131,7 +161,6 @@ const ReceitaFormCreate = () => {
         >
           {loading ? "Salvando..." : "Criar Receita"}
         </button>
-
       </form>
     </div>
   );

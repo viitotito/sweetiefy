@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const useAuthFetch = () => {
     const navigate = useNavigate();
+    const API_URL = import.meta.env.VITE_API_URL; 
 
     const authFetch = useCallback(
         /**
@@ -26,13 +27,15 @@ const useAuthFetch = () => {
                 credentials: "include",
             };
 
-            let res = await fetch(url, { ...baseOptions, headers });
+            const fullUrl = url.startsWith("http") ? url : `${API_URL}${url}`;
+
+            let res = await fetch(fullUrl, { ...baseOptions, headers });
 
             if (res.status !== 401) {
                 return res;
             }
 
-            const refreshRes = await fetch("http://localhost:3000/api/usuarios/refresh", {
+            const refreshRes = await fetch(`${API_URL}/api/usuarios/refresh`, {
                 method: "POST",
                 credentials: "include", 
                 signal,
@@ -56,11 +59,11 @@ const useAuthFetch = () => {
             sessionStorage.setItem("at", newAccessToken);
             headers.set("Authorization", `Bearer ${newAccessToken}`);
 
-            res = await fetch(url, { ...baseOptions, headers });
+            res = await fetch(fullUrl, { ...baseOptions, headers });
 
             return res;
         },
-        [navigate] 
+        [navigate, API_URL]
     );
 
     return authFetch;

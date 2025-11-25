@@ -17,10 +17,12 @@ const ReceitaFormCreate = () => {
   const [ingredientesSelecionados, setIngredientesSelecionados] = useState({});
   const [loading, setLoading] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchIngredientes = async () => {
       try {
-        const res = await authFetch("http://localhost:3000/api/ingredientes");
+        const res = await authFetch(`${API_URL}/api/ingredientes`);
         if (!res.ok) throw new Error("Erro ao buscar ingredientes");
         const data = await res.json();
         setIngredientes(data);
@@ -29,7 +31,7 @@ const ReceitaFormCreate = () => {
       }
     };
     fetchIngredientes();
-  }, [authFetch, setToast]);
+  }, [authFetch, setToast, API_URL]);
 
   const handleImagemChange = (e) => {
     const file = e.target.files[0];
@@ -96,7 +98,7 @@ const ReceitaFormCreate = () => {
 
       formData.append("ingredientes", JSON.stringify(ingredientesArray));
 
-      const res = await authFetch("http://localhost:3000/api/receitas", {
+      const res = await authFetch(`${API_URL}/api/receitas`, {
         method: "POST",
         body: formData,
       });

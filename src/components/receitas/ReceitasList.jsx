@@ -10,10 +10,12 @@ const ReceitasList = () => {
   const [receitas, setReceitas] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const API_URL = import.meta.env.VITE_API_URL; 
+
   useEffect(() => {
     const carregar = async () => {
       try {
-        const res = await authFetch("http://localhost:3000/api/receitas");
+        const res = await authFetch(`${API_URL}/api/receitas`);
         if (!res.ok) {
           const msg = (await res.json().catch(() => null))?.erro;
           throw new Error(msg || "Erro ao carregar receitas.");
@@ -28,7 +30,7 @@ const ReceitasList = () => {
       }
     };
     carregar();
-  }, [authFetch, setToast]);
+  }, [authFetch, setToast, API_URL]);
 
   if (loading) return <p className="text-center mt-4">Carregando receitas...</p>;
 

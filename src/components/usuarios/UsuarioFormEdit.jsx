@@ -15,10 +15,12 @@ const UsuarioFormEdit = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchUsuario = async () => {
       try {
-        const res = await authFetch(`http://localhost:3000/api/usuarios/${id}`);
+        const res = await authFetch(`${API_URL}/api/usuarios/${id}`);
         if (!res.ok) {
           const data = await res.json().catch(() => ({}));
           throw new Error(data.erro || "Erro ao buscar usuário.");
@@ -36,7 +38,7 @@ const UsuarioFormEdit = () => {
     };
 
     fetchUsuario();
-  }, [authFetch, id, setToast, navigate]);
+  }, [authFetch, id, setToast, navigate, API_URL]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,7 +49,7 @@ const UsuarioFormEdit = () => {
 
     setSaving(true);
     try {
-      const res = await authFetch(`http://localhost:3000/api/usuarios/${id}`, {
+      const res = await authFetch(`${API_URL}/api/usuarios/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nome: nome.trim(), email: email.trim().toLowerCase(), perfil }),

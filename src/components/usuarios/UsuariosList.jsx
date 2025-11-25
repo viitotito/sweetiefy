@@ -10,10 +10,12 @@ const UsuariosList = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const fetchUsuarios = async () => {
     setLoading(true);
     try {
-      const res = await authFetch("http://localhost:3000/api/usuarios");
+      const res = await authFetch(`${API_URL}/api/usuarios`);
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.erro || "Erro ao buscar usuários.");
@@ -35,7 +37,7 @@ const UsuariosList = () => {
     if (!window.confirm(`Deseja realmente deletar o usuário "${nome}"?`)) return;
 
     try {
-      const res = await authFetch(`http://localhost:3000/api/usuarios/${id}`, {
+      const res = await authFetch(`${API_URL}/api/usuarios/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) {

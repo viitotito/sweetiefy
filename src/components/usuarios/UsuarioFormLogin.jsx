@@ -12,14 +12,16 @@ const UsuarioFormLogin = () => {
 
     const navigate = useNavigate();
     const { setUser } = useAuth();
-    const { setToast } = useToast(); 
+    const { setToast } = useToast();
+
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
         try {
-            const res = await fetch("http://localhost:3000/api/usuarios/login", {
+            const res = await fetch(`${API_URL}/api/usuarios/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",

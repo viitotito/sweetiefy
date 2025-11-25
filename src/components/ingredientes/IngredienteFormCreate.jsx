@@ -14,6 +14,7 @@ const IngredienteFormCreate = () => {
   const [loading, setLoading] = useState(false);
 
   const metricasEnum = ["Kg", "g", "L", "ml", "unidade", "mg"];
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ const IngredienteFormCreate = () => {
 
     setLoading(true);
     try {
-      const res = await authFetch("http://localhost:3000/api/ingredientes", {
+      const res = await authFetch(`${API_URL}/api/ingredientes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nome, preco: Number(preco), metrica }),
@@ -57,11 +58,7 @@ const IngredienteFormCreate = () => {
   };
 
   return (
-    <form
-      className="card p-4 shadow-sm mx-auto"
-      style={{ maxWidth: "600px" }}
-      onSubmit={handleSubmit}
-    >
+    <form className="card p-4 shadow-sm mx-auto" style={{ maxWidth: "600px" }} onSubmit={handleSubmit}>
       <div className="mb-3">
         <label className="form-label">Nome</label>
         <input
@@ -101,9 +98,7 @@ const IngredienteFormCreate = () => {
         >
           <option value="">Selecione uma métrica</option>
           {metricasEnum.map((m) => (
-            <option key={m} value={m}>
-              {m}
-            </option>
+            <option key={m} value={m}>{m}</option>
           ))}
         </select>
       </div>

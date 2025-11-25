@@ -9,11 +9,13 @@ const IngredienteList = () => {
   const [ingredientes, setIngredientes] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const API_URL = import.meta.env.VITE_API_URL; 
+
   useEffect(() => {
     const fetchIngredientes = async () => {
       setLoading(true);
       try {
-        const res = await authFetch("http://localhost:3000/api/ingredientes");
+        const res = await authFetch(`${API_URL}/api/ingredientes`);
         if (!res.ok) throw new Error("Erro ao buscar ingredientes");
         const data = await res.json();
         setIngredientes(data.map(ing => ({ ...ing, preco: Number(ing.preco ?? 0) })));
@@ -25,7 +27,7 @@ const IngredienteList = () => {
       }
     };
     fetchIngredientes();
-  }, [authFetch, setToast]);
+  }, [authFetch, setToast, API_URL]);
 
   const handleDeleted = (id) => {
     setIngredientes(prev => prev.filter(ing => ing.id !== id));

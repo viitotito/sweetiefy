@@ -9,6 +9,8 @@ const ReceitaFormEdit = () => {
   const navigate = useNavigate();
   const { setToast } = useToast();
 
+  const API_URL = import.meta.env.VITE_API_URL; 
+
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
   const [preco, setPreco] = useState("");
@@ -22,12 +24,14 @@ const ReceitaFormEdit = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const ingRes = await authFetch("http://localhost:3000/api/ingredientes");
+        // Buscar ingredientes
+        const ingRes = await authFetch(`${API_URL}/api/ingredientes`);
         if (!ingRes.ok) throw new Error("Erro ao buscar ingredientes");
         const ingData = await ingRes.json();
         setIngredientes(ingData);
 
-        const recRes = await authFetch(`http://localhost:3000/api/receitas/${id}`);
+        // Buscar receita
+        const recRes = await authFetch(`${API_URL}/api/receitas/${id}`);
         if (!recRes.ok) throw new Error("Erro ao buscar receita");
         const recData = await recRes.json();
 
@@ -49,7 +53,7 @@ const ReceitaFormEdit = () => {
     };
 
     fetchData();
-  }, [id, authFetch, setToast]);
+  }, [id, authFetch, setToast, API_URL]);
 
   const handleImagemChange = (e) => {
     const file = e.target.files[0];
@@ -113,7 +117,7 @@ const ReceitaFormEdit = () => {
 
       formData.append("ingredientes", JSON.stringify(ingredientesArray));
 
-      const res = await authFetch(`http://localhost:3000/api/receitas/${id}`, {
+      const res = await authFetch(`${API_URL}/api/receitas/${id}`, {
         method: "PATCH",
         body: formData,
       });

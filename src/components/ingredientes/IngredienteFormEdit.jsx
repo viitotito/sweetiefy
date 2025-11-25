@@ -16,10 +16,12 @@ const IngredienteFormEdit = ({ ingredienteId }) => {
 
   const metricasEnum = ["Kg", "g", "L", "ml", "unidade", "mg"];
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchIngrediente = async () => {
       try {
-        const res = await authFetch(`http://localhost:3000/api/ingredientes/${ingredienteId}`);
+        const res = await authFetch(`${API_URL}/api/ingredientes/${ingredienteId}`);
         if (!res.ok) throw new Error("Erro ao buscar ingrediente");
 
         const data = await res.json();
@@ -33,7 +35,7 @@ const IngredienteFormEdit = ({ ingredienteId }) => {
       }
     };
     fetchIngrediente();
-  }, [ingredienteId, authFetch, setToast]);
+  }, [ingredienteId, authFetch, setToast, API_URL]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,7 +48,7 @@ const IngredienteFormEdit = ({ ingredienteId }) => {
     setSaving(true);
 
     try {
-      const res = await authFetch(`http://localhost:3000/api/ingredientes/${ingredienteId}`, {
+      const res = await authFetch(`${API_URL}/api/ingredientes/${ingredienteId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nome, preco: Number(preco), metrica }),
@@ -77,68 +79,30 @@ const IngredienteFormEdit = ({ ingredienteId }) => {
   if (loading) return <p className="text-center mt-4">Carregando ingrediente...</p>;
 
   return (
-    <form
-      className="card p-4 shadow-sm mx-auto"
-      style={{ maxWidth: "600px" }}
-      onSubmit={handleSubmit}
-    >
+    <form className="card p-4 shadow-sm mx-auto" style={{ maxWidth: "600px" }} onSubmit={handleSubmit}>
       <div className="mb-3">
         <label className="form-label">Nome</label>
-        <input
-          type="text"
-          className="form-control"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          disabled={saving}
-          required
-        />
+        <input type="text" className="form-control" value={nome} onChange={(e) => setNome(e.target.value)} disabled={saving} required />
       </div>
 
       <div className="mb-3">
         <label className="form-label">Preço (R$)</label>
-        <input
-          type="number"
-          className="form-control"
-          value={preco}
-          onChange={(e) => setPreco(e.target.value)}
-          min="0"
-          step="0.01"
-          disabled={saving}
-          required
-        />
+        <input type="number" className="form-control" value={preco} onChange={(e) => setPreco(e.target.value)} min="0" step="0.01" disabled={saving} required />
       </div>
 
       <div className="mb-3">
         <label className="form-label">Métrica</label>
-        <select
-          className="form-select"
-          value={metrica}
-          onChange={(e) => setMetrica(e.target.value)}
-          disabled={saving}
-          required
-        >
+        <select className="form-select" value={metrica} onChange={(e) => setMetrica(e.target.value)} disabled={saving} required>
           <option value="">Selecione uma métrica</option>
-          {metricasEnum.map((m) => (
-            <option key={m} value={m}>{m}</option>
-          ))}
+          {metricasEnum.map((m) => <option key={m} value={m}>{m}</option>)}
         </select>
       </div>
 
       <div className="d-flex justify-content-between">
-        <button
-          type="button"
-          className="btn btn-outline-secondary"
-          onClick={() => navigate("/ingredientes")}
-          disabled={saving}
-        >
+        <button type="button" className="btn btn-outline-secondary" onClick={() => navigate("/ingredientes")} disabled={saving}>
           Cancelar
         </button>
-
-        <button
-          type="submit"
-          className="btn btn-primary"
-          disabled={saving}
-        >
+        <button type="submit" className="btn btn-primary" disabled={saving}>
           {saving ? "Salvando..." : "Salvar Alterações"}
         </button>
       </div>

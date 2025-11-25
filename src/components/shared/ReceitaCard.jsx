@@ -8,8 +8,9 @@ const ReceitaCard = ({ receita, onDeleted }) => {
   const navigate = useNavigate();
   const authFetch = useAuthFetch();
   const { setToast } = useToast();
-
   const [loading, setLoading] = useState(false);
+
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleShow = () => navigate(`/receitas/${receita.id}`);
   const handleEdit = () => navigate(`/receitas/${receita.id}/edit`);
@@ -20,7 +21,7 @@ const ReceitaCard = ({ receita, onDeleted }) => {
 
     setLoading(true);
     try {
-      const res = await authFetch(`http://localhost:3000/api/receitas/${receita.id}`, {
+      const res = await authFetch(`${API_URL}/api/receitas/${receita.id}`, {
         method: "DELETE",
       });
 
@@ -64,7 +65,7 @@ const ReceitaCard = ({ receita, onDeleted }) => {
         </div>
 
         <div>
-          <p className="fw-bold">Preço: R$ {receita.preco}</p>
+          <p className="fw-bold">Preço: R$ {Number(receita.preco).toFixed(2)}</p>
 
           <div className="d-flex justify-content-center gap-2 mt-2">
             <button
@@ -112,6 +113,7 @@ const ReceitaCard = ({ receita, onDeleted }) => {
               }}
             >
               <i className="bi bi-trash"></i>
+              {loading ? "..." : ""}
             </button>
           </div>
         </div>

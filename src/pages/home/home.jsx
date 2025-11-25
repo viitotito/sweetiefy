@@ -13,7 +13,7 @@ const Home = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        overflow: "hidden", 
+        overflow: "hidden",
         margin: 0,
         padding: 0,
       }}
@@ -23,10 +23,13 @@ const Home = () => {
         style={{
           maxWidth: "600px",
           width: "100%",
-          boxSizing: "border-box", // importante para que padding não aumente tamanho
+          boxSizing: "border-box",
         }}
       >
-        <h5 className="mb-3">Bem-vindo ao Sweetiefy 🎂</h5>
+        <h3 className="mb-3">
+          {user.nome}
+        </h3>
+        <h5>Seja bem-vindo ao Sweetiefy!</h5>
         <p>Aqui você pode acessar ingredientes, receitas, configurações e muito mais.</p>
         <div className="mt-3 d-flex flex-column flex-sm-row justify-content-center gap-2">
           <button

@@ -3,7 +3,7 @@ import ThemeButton from "./ThemeButton";
 import { useAuth } from "../../auth/useAuth";
 
 export default function NavbarLogged() {
-  const { user, setUser } = useAuth();
+  const { setUser } = useAuth();
 
   const handleLogout = () => {
     sessionStorage.removeItem("at");
@@ -11,27 +11,32 @@ export default function NavbarLogged() {
     window.location.href = "/usuarios/login";
   };
 
-  const isAdmin = Number(user?.perfil) === 1;
-
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <nav className="navbar navbar-expand-lg navbar-light bg-body-tertiary">
       <div className="container-fluid">
+        {/* Marca */}
         <Link className="navbar-brand" to="/home">
           Sweetiefy
         </Link>
 
+        {/* Botão colapsar para mobile */}
         <button
           className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
+        {/* Menu colapsável */}
         <div className="collapse navbar-collapse" id="navbarNav">
+          {/* Links principais */}
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-
+            {/* Ingredientes */}
             <li className="nav-item dropdown">
               <NavLink
                 to="#"
@@ -67,6 +72,7 @@ export default function NavbarLogged() {
               </ul>
             </li>
 
+            {/* Receitas */}
             <li className="nav-item dropdown">
               <NavLink
                 to="#"
@@ -101,42 +107,18 @@ export default function NavbarLogged() {
                 </li>
               </ul>
             </li>
-
-            {isAdmin && (
-              <li className="nav-item">
-                <NavLink
-                  to="/configuracoes"
-                  className={({ isActive }) =>
-                    "nav-link" + (isActive ? " active" : "")
-                  }
-                >
-                  Configurações
-                </NavLink>
-              </li>
-            )}
           </ul>
 
-          <div className="d-flex align-items-center">
-            <ThemeButton />
+          {/* Botões à direita: logout + tema */}
+          <div className="d-flex align-items-center gap-2">
+            <button
+              className="btn btn-outline-secondary d-flex align-items-center gap-1"
+              onClick={handleLogout}
+            >
+              <i className="bi bi-box-arrow-right"></i> Sair
+            </button>
 
-            <div className="dropdown ms-3">
-              <button
-                className="nav-link dropdown-toggle bg-transparent border-0"
-                data-bs-toggle="dropdown"
-              >
-                {user?.nome ?? "Usuário"}
-              </button>
-              <ul className="dropdown-menu dropdown-menu-end">
-                <li>
-                  <button
-                    className="dropdown-item text-center"
-                    onClick={handleLogout}
-                  >
-                    Desconectar
-                  </button>
-                </li>
-              </ul>
-            </div>
+            <ThemeButton />
           </div>
         </div>
       </div>

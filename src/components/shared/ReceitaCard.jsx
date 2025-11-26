@@ -16,8 +16,7 @@ const ReceitaCard = ({ receita, onDeleted }) => {
   const handleEdit = () => navigate(`/receitas/${receita.id}/edit`);
 
   const handleDelete = async () => {
-    const confirm = window.confirm(`Deseja realmente deletar "${receita.nome}"?`);
-    if (!confirm) return;
+    if (!window.confirm(`Deseja realmente deletar "${receita.nome}"?`)) return;
 
     setLoading(true);
     try {
@@ -35,7 +34,6 @@ const ReceitaCard = ({ receita, onDeleted }) => {
         duration: 3000,
       });
     } catch (err) {
-      console.error(err);
       setToast({
         message: err.message,
         type: "error",
@@ -60,8 +58,35 @@ const ReceitaCard = ({ receita, onDeleted }) => {
 
       <div className="card-body p-2 flex-grow-1 d-flex flex-column justify-content-between">
         <div>
-          <h5 className="card-title">{receita.nome}</h5>
-          <p className="card-text">{receita.descricao || "Sem descrição."}</p>
+          {/* Nome com truncamento em 1 linha */}
+          <h5
+            className="card-title"
+            style={{
+              maxWidth: "100%",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+            title={receita.nome}
+          >
+            {receita.nome}
+          </h5>
+
+          {/* Descrição com truncamento em 2 linhas */}
+          <p
+            className="card-text"
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              minHeight: "2.4em", // garante espaço mesmo com texto curto
+            }}
+            title={receita.descricao || "Sem descrição."}
+          >
+            {receita.descricao || "Sem descrição."}
+          </p>
         </div>
 
         <div>

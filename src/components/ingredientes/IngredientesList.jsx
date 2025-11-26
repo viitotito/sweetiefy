@@ -8,6 +8,7 @@ const IngredienteList = () => {
   const { setToast } = useToast();
   const [ingredientes, setIngredientes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   const API_URL = import.meta.env.VITE_API_URL; 
 
@@ -34,13 +35,29 @@ const IngredienteList = () => {
     setToast({ message: "Ingrediente deletado com sucesso!", type: "success", duration: 3000 });
   };
 
+  // Filtra ingredientes com base na pesquisa
+  const filteredIngredientes = ingredientes.filter((ing) =>
+    ing.nome.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="container py-4">
+      {/* Barra de pesquisa */}
+      <div className="mb-4" style={{ maxWidth: "400px", margin: "0 auto" }}>
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Buscar ingrediente..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
       {loading && <p className="text-center">Carregando ingredientes...</p>}
-      {!loading && ingredientes.length === 0 && <p className="text-center">Nenhum ingrediente encontrado.</p>}
+      {!loading && filteredIngredientes.length === 0 && <p className="text-center">Nenhum ingrediente encontrado.</p>}
 
       <div className="d-flex justify-content-center flex-wrap gap-3">
-        {ingredientes.map(ing => (
+        {filteredIngredientes.map(ing => (
           <IngredienteCard key={ing.id} ingrediente={ing} onDeleted={handleDeleted} />
         ))}
       </div>

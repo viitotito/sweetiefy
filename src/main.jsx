@@ -8,6 +8,7 @@ import UsuariosLogin from './pages/usuarios/UsuariosLogin.jsx';
 import UsuariosRegister from './pages/usuarios/UsuariosRegister.jsx';
 import UsuariosIndex from './pages/usuarios/UsuariosIndex.jsx';
 import UsuariosEdit from './pages/usuarios/UsuariosEdit.jsx';
+import UsuariosShow from './pages/usuarios/UsuariosShow.jsx';
 
 import IngredientesCreate from './pages/ingredientes/IngredientesCreate.jsx';
 import IngredientesEdit from './pages/ingredientes/IngredientesEdit.jsx';
@@ -43,6 +44,13 @@ const router = createBrowserRouter([
         path: "/usuarios/:id/edit", element: (
             <PrivateRoute>
                 <PrivateLayout><UsuariosEdit /></PrivateLayout>
+            </PrivateRoute>
+        )
+    },
+        {
+        path: "/usuarios/:id", element: (
+            <PrivateRoute>
+                <PrivateLayout><UsuariosShow /></PrivateLayout>
             </PrivateRoute>
         )
     },

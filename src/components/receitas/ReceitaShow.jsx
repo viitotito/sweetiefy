@@ -9,10 +9,14 @@ const ReceitaShow = () => {
   const authFetch = useAuthFetch();
   const { setToast } = useToast();
 
-  const API_URL = import.meta.env.VITE_API_URL; 
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const [receita, setReceita] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Função para truncar texto
+  const truncateText = (text, maxLength = 20) =>
+    text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 
   useEffect(() => {
     const fetchReceita = async () => {
@@ -78,26 +82,28 @@ const ReceitaShow = () => {
         {receita.ingredientes.length === 0 ? (
           <p className="text-muted">Nenhum ingrediente cadastrado.</p>
         ) : (
-          <table className="table table-sm">
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Qtd</th>
-                <th>Preço Unitário</th>
-                <th>Custo Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {receita.ingredientes.map((ing) => (
-                <tr key={ing.ingrediente_id}>
-                  <td>{ing.nome}</td>
-                  <td>{ing.quantidade}</td>
-                  <td>{Number(ing.preco).toFixed(2)}</td>
-                  <td>{Number(ing.custo_total).toFixed(2)}</td>
+          <div style={{ overflowX: "auto" }}>
+            <table className="table table-sm">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Qtd</th>
+                  <th>Preço</th>
+                  <th>Total</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {receita.ingredientes.map((ing) => (
+                  <tr key={ing.ingrediente_id}>
+                    <td title={ing.nome}>{truncateText(ing.nome, 25)}</td>
+                    <td>{ing.quantidade}</td>
+                    <td>{Number(ing.preco).toFixed(2)}</td>
+                    <td>{Number(ing.custo_total).toFixed(2)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 

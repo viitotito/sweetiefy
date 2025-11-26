@@ -9,6 +9,7 @@ const ReceitasList = () => {
 
   const [receitas, setReceitas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   const API_URL = import.meta.env.VITE_API_URL; 
 
@@ -38,17 +39,34 @@ const ReceitasList = () => {
     setReceitas((prev) => prev.filter((r) => r.id !== id));
   };
 
+  const filteredReceitas = receitas.filter((r) =>
+    r.nome.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="container mt-4">
-      {receitas.length === 0 && <p className="text-center">Nenhuma receita cadastrada.</p>}
-
-      <div className="row">
-        {receitas.map((r) => (
-          <div className="col-md-4 mb-4" key={r.id}>
-            <ReceitaCard receita={r} onDeleted={handleDeleted} />
-          </div>
-        ))}
+      {/* Barra de pesquisa */}
+      <div className="mb-4" style={{ maxWidth: "400px", margin: "0 auto" }}>
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Buscar receita..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
+
+      {filteredReceitas.length === 0 ? (
+        <p className="text-center">Nenhuma receita encontrada.</p>
+      ) : (
+        <div className="row">
+          {filteredReceitas.map((r) => (
+            <div className="col-md-4 mb-4" key={r.id}>
+              <ReceitaCard receita={r} onDeleted={handleDeleted} />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

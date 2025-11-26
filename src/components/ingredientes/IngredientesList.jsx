@@ -35,14 +35,12 @@ const IngredienteList = () => {
     setToast({ message: "Ingrediente deletado com sucesso!", type: "success", duration: 3000 });
   };
 
-  // Filtra ingredientes com base na pesquisa
   const filteredIngredientes = ingredientes.filter((ing) =>
     ing.nome.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <div className="container py-4">
-      {/* Barra de pesquisa */}
       <div className="mb-4" style={{ maxWidth: "400px", margin: "0 auto" }}>
         <input
           type="text"

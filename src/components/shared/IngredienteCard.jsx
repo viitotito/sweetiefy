@@ -55,12 +55,12 @@ const IngredienteCard = ({ ingrediente, onDeleted }) => {
       <div
         className="card shadow-sm p-3"
         style={{
-          width: "20rem",       // Largura um pouco maior
-          height: "260px",      // Altura aumentada
+          width: "20rem",       
+          height: "260px",      
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          paddingBottom: "12px" // Mais espaço inferior para os botões
+          paddingBottom: "12px" 
         }}
       >
         <div>

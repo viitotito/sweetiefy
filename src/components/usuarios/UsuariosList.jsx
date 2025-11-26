@@ -48,7 +48,6 @@ const UsuariosList = () => {
 
   return (
     <div className="p-4">
-      {/* Barra de pesquisa */}
       <div className="mb-4" style={{ maxWidth: "400px", margin: "0 auto" }}>
         <input
           type="text"
@@ -59,7 +58,6 @@ const UsuariosList = () => {
         />
       </div>
 
-      {/* Grid de cards */}
       <div className="d-flex flex-wrap justify-content-center gap-3">
         {filteredUsuarios.length > 0 ? (
           filteredUsuarios.map((usuario) => (

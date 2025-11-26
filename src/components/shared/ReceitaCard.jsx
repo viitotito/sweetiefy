@@ -58,7 +58,6 @@ const ReceitaCard = ({ receita, onDeleted }) => {
 
       <div className="card-body p-2 flex-grow-1 d-flex flex-column justify-content-between">
         <div>
-          {/* Nome com truncamento em 1 linha */}
           <h5
             className="card-title"
             style={{
@@ -72,7 +71,6 @@ const ReceitaCard = ({ receita, onDeleted }) => {
             {receita.nome}
           </h5>
 
-          {/* Descrição com truncamento em 2 linhas */}
           <p
             className="card-text"
             style={{
@@ -81,7 +79,7 @@ const ReceitaCard = ({ receita, onDeleted }) => {
               WebkitBoxOrient: "vertical",
               overflow: "hidden",
               textOverflow: "ellipsis",
-              minHeight: "2.4em", // garante espaço mesmo com texto curto
+              minHeight: "2.4em", 
             }}
             title={receita.descricao || "Sem descrição."}
           >

@@ -45,7 +45,6 @@ const ReceitasList = () => {
 
   return (
     <div className="container mt-4">
-      {/* Barra de pesquisa */}
       <div className="mb-4" style={{ maxWidth: "400px", margin: "0 auto" }}>
         <input
           type="text"

@@ -20,18 +20,16 @@ const ReceitaFormEdit = () => {
   const [ingredientesSelecionados, setIngredientesSelecionados] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [search, setSearch] = useState(""); // Para a barra de pesquisa
+  const [search, setSearch] = useState(""); 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Buscar ingredientes
         const ingRes = await authFetch(`${API_URL}/api/ingredientes`);
         if (!ingRes.ok) throw new Error("Erro ao buscar ingredientes");
         const ingData = await ingRes.json();
         setIngredientes(ingData);
 
-        // Buscar receita
         const recRes = await authFetch(`${API_URL}/api/receitas/${id}`);
         if (!recRes.ok) throw new Error("Erro ao buscar receita");
         const recData = await recRes.json();
@@ -143,7 +141,6 @@ const ReceitaFormEdit = () => {
 
   if (loading) return <p className="text-center mt-4">Carregando receita...</p>;
 
-  // Filtra os ingredientes com base na pesquisa
   const filteredIngredientes = ingredientes.filter((ing) =>
     ing.nome.toLowerCase().includes(search.toLowerCase())
   );
@@ -187,7 +184,6 @@ const ReceitaFormEdit = () => {
         />
       </div>
 
-      {/* Barra de pesquisa de ingredientes */}
       <div className="mb-3">
         <label className="form-label">Pesquisar Ingredientes</label>
         <input

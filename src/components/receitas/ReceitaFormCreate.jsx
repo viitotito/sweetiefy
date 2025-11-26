@@ -187,9 +187,9 @@ const ReceitaFormCreate = () => {
         <div
           className="p-3"
           style={{
-            height: "200px",      // altura fixa
-            minHeight: "200px",   // garante mínimo
-            maxHeight: "200px",   // garante máximo
+            height: "200px",      
+            minHeight: "200px",   
+            maxHeight: "200px",   
             overflowY: "auto",
             border: "1px solid #c9c9c99a",
             borderRadius: ".25rem",

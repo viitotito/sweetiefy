@@ -14,7 +14,6 @@ const ReceitaShow = () => {
   const [receita, setReceita] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Função para truncar texto
   const truncateText = (text, maxLength = 20) =>
     text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 

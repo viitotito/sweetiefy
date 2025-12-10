@@ -1,38 +1,15 @@
 {
   "headers": [
     {
-      "source": "/index.html",
-      "headers": [
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; connect-src 'self' https://sweetiefy-backend.onrender.com; img-src 'self' data: https:; script-src 'self'; style-src 'self' 'unsafe-inline';"
-        },
-        {
-          "key": "Cache-Control",
-          "value": "no-store"
-        }
-      ]
-    },
-    {
-      "source": "/",
-      "headers": [
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; connect-src 'self' https://sweetiefy-backend.onrender.com; img-src 'self' data: https:; script-src 'self'; style-src 'self' 'unsafe-inline';"
-        }
-      ]
-    },
-    {
       "source": "/(.*)",
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; connect-src 'self' https://sweetiefy-backend.onrender.com; img-src 'self' data: https:; script-src 'self'; style-src 'self' 'unsafe-inline';"
+          "value": "default-src 'self'; connect-src 'self' https://sweetiefy-backend.onrender.com; img-src 'self' data: https:; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; navigate-to *; frame-ancestors *;"
         }
       ]
     }
   ],
-
   "rewrites": [
     {
       "source": "/(.*)",
@@ -40,5 +17,3 @@
     }
   ]
 }
-
-
